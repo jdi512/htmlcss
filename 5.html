@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Display Current Date and Time in Mayan Calendar</title>
 <style>
+    /* 배경화면은 검은색 */
     body {
         margin: 0;
         padding: 0;
@@ -12,27 +13,24 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        background-color: black; /* Change background color to black */
-        color: orange; /* Change text color to orange */
-        font-size: 1.5em;
-        font-weight: bold; /* Apply bold font */
+        background-color: black;
         flex-direction: column;
     }
-
+    /* 화면 중간에 출력 */
     #container {
         text-align: center;
     }
-
+    /* 마야력은 오렌지색으로 출력하고, 글자 크기는 1.5배(1.5em) */
     #mayanDate {
-        color: orange; /* Change date text color to orange */
+        color: orange;
         font-size: 1.5em; 
     }
-
+    /* 현재 시각은 노란색으로 출력하고, 글자 크기는 2.5배(2.5em) */
     #currentTime {
-        color: yellow; /* Change time text color to yellow */
+        color: yellow;
         font-size: 2.5em; 
-        font-weight: bold; /* Apply bold font */
-        margin-top: 0.5em; /* Add top margin to time text */
+        font-weight: bold;
+        margin-top: 0.5em;
     }
 </style>
 </head>
@@ -44,17 +42,13 @@
 </div>
 
 <script>
+    // 마야력으로 출력, 마야력은 기원전 3114년 8월 11일부터 시작되었으며, 박툰, 카툰, 툰, 위날, 킨 순으로 되어 있습니다. (1박툰 = 20카툰, 1카툰 = 20툰, 1툰 = 18위날, 1위낱 = 20킨)
 function convertGregorianToMayan(gregorianDate) {
-    // Logic to convert Gregorian date to Mayan date
-    
-    // 1. The Mayan calendar's reference date is known to be August 11, 3114 BCE.
-    var mayaEpoch = new Date(-3113, 7, 11); // Use 7 because 0 represents January.
-    
-    // 2. Calculate the number of days since the reference date.
+    var mayaEpoch = new Date(-3113, 7, 11); 
+  
     var timeDiff = gregorianDate.getTime() - mayaEpoch.getTime();
-    var daysSinceEpoch = Math.floor(timeDiff / (1000 * 3600 * 24)); // Convert to days
-    
-    // 3. Calculate Baktun, Katun, Tun, Winal, and K'in values for the Mayan date.
+    var daysSinceEpoch = Math.floor(timeDiff / (1000 * 3600 * 24));
+
     var baktun = Math.floor(daysSinceEpoch / 144000);
     var remainingDays = daysSinceEpoch % 144000;
     var katun = Math.floor(remainingDays / 7200);
@@ -64,16 +58,17 @@ function convertGregorianToMayan(gregorianDate) {
     var winal = Math.floor(remainingDays / 20);
     var kin = remainingDays % 20;
     
-    // 4. Return the Mayan date as a string.
+
     return baktun + "." + katun + "." + tun + "." + winal + "." + kin;
 }
 
+// 그리고리력 날짜를 마야력으로 환산
 function getCurrentMayanDate() {
     var gregorianDate = new Date();
     var mayanDate = convertGregorianToMayan(gregorianDate);
     return mayanDate;
 }
-
+// 현재 날짜 출력(padStart 이용)
 function getCurrentTime() {
     var currentTime = new Date();
     var hours = currentTime.getHours().toString().padStart(2, '0');
@@ -100,6 +95,28 @@ setInterval(displayCurrentDateTime, 1);
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
