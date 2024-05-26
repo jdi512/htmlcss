@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Current Time</title>
     <style>
+        /* 배경 화면 */
         body {
             background-color: black;
             color: white;
@@ -16,36 +17,41 @@
             height: 100vh;
             margin: 0;
         }
+        /* 시간 출력은 정중앙에 */
         .clock {
             text-align: center;
         }
+        /* 년도와 시간은 오렌지색 */
         .year, .hours {
             color: orange;
         }
+        /* 월과 분은 녹색 */
         .month, .minutes {
             color: green;
         }
+        /* 일과 초는 노란색 */
         .day, .seconds {
             color: yellow;
         }
+        /* 밀리세컨드와 요일은 연두색 */
         .milliseconds, .weekday {
             color: lime;
         }
     </style>
     <script>
-        // Convert number to Hanja characters
+        // 숫자를 한자로 바꿉니다.
         function numberToHanja(num) {
             const hanjaNumbers = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
             return num.toString().split('').map(digit => hanjaNumbers[parseInt(digit)]).join('');
         }
 
-        // Convert day to Hanja characters
+        // 요일을 한자로 바꿉니다.
         function dayToHanja(day) {
             const hanjaDays = ['日', '月', '火', '水', '木', '金', '土'];
             return hanjaDays[day];
         }
 
-        // Update the time and date
+        // 현재 시간을 한자로 바꿔서 출력합니다.
         function updateTime() {
             const now = new Date();
             const year = numberToHanja(now.getFullYear());
@@ -90,6 +96,34 @@
     </div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
