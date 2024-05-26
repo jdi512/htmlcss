@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Islamic Date and Time</title>
     <style>
-        /* Center the content and set the background to black */
+        /* 배경화면을 검은색으로 */
         body {
             display: flex;
             justify-content: center;
@@ -16,17 +16,17 @@
             font-family: Arial, sans-serif;
             margin: 0;
         }
-        /* Center the text */
+        /* 배경화면을 화면 정중앙으로 */
         .date-time {
             text-align: center;
         }
-        /* Set date text color to orange, size to 3x, and bold */
+        /* 원래 크기의 3배(3em), 굵게(bold), 오렌지색(orange)으로 */
         .date {
             color: orange;
             font-size: 3em;
             font-weight: bold;
         }
-        /* Set time text color to green, size to 5x, and bold */
+        /* 원래 크기의 5배(5em), 굵게(bold), 녹색(green)으로 */
         .time {
             color: green;
             font-size: 5em;
@@ -40,15 +40,15 @@
         <div id="islamic-time" class="time"></div>
     </div>
     <script>
-        // Convert Gregorian date to Islamic date
+        // 그레고리력 -> 율리우스력 -> 이슬람력(헤지라, 622년를 원년으로 하며, 태음력입니다.)
         function gregorianToIslamic(gYear, gMonth, gDay) {
-            // Julian day number calculation for Gregorian date
+            // 율리우스력 환산식
             var jd = Math.floor((1461 * (gYear + 4800 + Math.floor((gMonth - 14) / 12))) / 4) +
                 Math.floor((367 * (gMonth - 2 - 12 * (Math.floor((gMonth - 14) / 12)))) / 12) -
                 Math.floor((3 * (Math.floor((gYear + 4900 + Math.floor((gMonth - 14) / 12)) / 100))) / 4) +
                 gDay - 32075;
 
-            // Islamic date calculation from Julian day number
+            // 율리우스력 -> 이슬람력(환산)
             var l = jd - 1948440 + 10632;
             var n = Math.floor((l - 1) / 10631);
             l = l - 10631 * n + 354;
@@ -61,7 +61,7 @@
             return { year: iYear, month: iMonth + 1, day: iDay };
         }
 
-        // Get the name of the Islamic month in Arabic
+        // 이슬람력엔 고유의 아랍 월이 있습니다.
         function getIslamicMonthName(monthIndex) {
             const monthNames = [
                 "محرم", "صفر", "ربيع الأول", "ربيع الآخر",
@@ -72,41 +72,70 @@
             return monthNames[monthIndex - 1];
         }
 
-        // Update the Islamic date and time
+        // 출력
         function updateIslamicTime() {
-            // Get the current date and time
+            // 현재 날짜 출력
             const now = new Date();
             const gYear = now.getFullYear();
             const gMonth = now.getMonth() + 1; // Months are zero-based
             const gDay = now.getDate();
-            // Convert Gregorian date to Islamic date
+            // 이슬람력으로 출력
             const { year, month, day } = gregorianToIslamic(gYear, gMonth, gDay);
 
-            // Get the Islamic month name in Arabic
+            // 현재 월은 아랍 월로
             const islamicMonthName = getIslamicMonthName(month);
 
-            // Format the current time
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const seconds = now.getSeconds().toString().padStart(2, '0');
-            const milliseconds = now.getMilliseconds().toString().padStart(3, '0');
+            // 현재 시각 출력
+            const hours = now.getHours().toString().padStart(2, '0'); //00~24
+            const minutes = now.getMinutes().toString().padStart(2, '0'); //00~59
+            const seconds = now.getSeconds().toString().padStart(2, '0'); //00~59
+            const milliseconds = now.getMilliseconds().toString().padStart(3, '0'); //000~999
 
-            // Combine the date and time into formatted strings
+            // 이 형식으로 출력합니다. (년도는 년,일 월, 시간은 시:분:초.밀리초)
             const formattedDate = `${year}, ${day} ${islamicMonthName}`;
             const formattedTime = `${hours}:${minutes}:${seconds}.${milliseconds}`;
 
-            // Update the HTML elements with the formatted date and time
+            // html 텍스트로 출력(getElementById)
             document.getElementById('islamic-date').innerText = formattedDate;
             document.getElementById('islamic-time').innerText = formattedTime;
         }
 
-        // Call updateIslamicTime every milliseconds
+        // 1ms마다 갱신
         setInterval(updateIslamicTime, 1);
-        // Initial call to display the time immediately upon loading
+        // 지연 없이 갱신
         updateIslamicTime();
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
