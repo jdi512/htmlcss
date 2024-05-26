@@ -38,7 +38,23 @@
             color: lime;
         }
     </style>
-    <script>
+</head>
+<body>
+    <div class="clock">
+        <div class="date" id="date">
+            <span class="year"></span>
+            <span class="month"></span>
+            <span class="day"></span>
+            <span class="weekday"></span>
+        </div>
+        <div class="time" id="time">
+            <span class="hours"></span>
+            <span class="minutes"></span>
+            <span class="seconds"></span>
+			<span class="milliseconds"></span>
+        </div>
+    </div>
+	    <script>
         // 숫자를 한자로 바꿉니다.
         function numberToHanja(num) {
             const hanjaNumbers = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
@@ -78,22 +94,6 @@
 		// Call the updateClock function immediately to avoid initial delay
         updateTime();
     </script>
-</head>
-<body>
-    <div class="clock">
-        <div class="date" id="date">
-            <span class="year"></span>
-            <span class="month"></span>
-            <span class="day"></span>
-            <span class="weekday"></span>
-        </div>
-        <div class="time" id="time">
-            <span class="hours"></span>
-            <span class="minutes"></span>
-            <span class="seconds"></span>
-			<span class="milliseconds"></span>
-        </div>
-    </div>
 </body>
 </html>
 
