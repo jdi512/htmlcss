@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morse Code Clock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            color: white;
+            margin: 0;
+            flex-direction: column;
+        }
+        .clock {
+            text-align: center;
+        }
+        .date, .time, .milliseconds {
+            font-size: 2em;
+            margin: 5px 0;
+        }
+        .morse-date, .morse-time, .morse-milliseconds {
+            font-size: 1.5em;
+            margin: 5px 0;
+        }
+        .year, .hours {
+            color: #ff7f00; /* Orange */
+        }
+        .month, .minutes {
+            color: #00ff00; /* Green */
+        }
+        .day, .seconds {
+            color: #ffff00; /* Yellow */
+        }
+        .milliseconds, .morse-milliseconds {
+            color: #ffffff; /* White */
+        }
+    </style>
+</head>
+<body>
+    <div class="clock">
+        <div class="date" id="date">
+            <span class="year"></span>
+            <span class="month"></span>
+            <span class="day"></span>
+        </div>
+        <div class="morse-date" id="morse-date">
+            <span class="year"></span>
+            <span class="month"></span>
+            <span class="day"></span>
+        </div>
+        <div class="time" id="time">
+            <span class="hours"></span>
+            <span class="minutes"></span>
+            <span class="seconds"></span>
+        </div>
+        <div class="morse-time" id="morse-time">
+            <span class="hours"></span>
+            <span class="minutes"></span>
+            <span class="seconds"></span>
+        </div>
+        <div class="milliseconds" id="milliseconds"></div>
+        <div class="morse-milliseconds" id="morse-milliseconds"></div>
+    </div>
+
+    <script>
+        // Function to convert numbers to Morse code
+        function toMorse(num) {
+            const morseCode = [
+                '-----', // 0
+                '.----', // 1
+                '..---', // 2
+                '...--', // 3
+                '....-', // 4
+                '.....', // 5
+                '-....', // 6
+                '--...', // 7
+                '---..', // 8
+                '----.'  // 9
+            ];
+            return morseCode[num];
+        }
+
+        // Function to update the clock
+        function updateClock() {
+            const now = new Date();
+            const year = String(now.getFullYear());
+            const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const date = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+
+            // Update the clock display with regular date and time
+            document.querySelector('.date .year').textContent = year;
+            document.querySelector('.date .month').textContent = month;
+            document.querySelector('.date .day').textContent = date;
+            document.querySelector('.time .hours').textContent = hours;
+            document.querySelector('.time .minutes').textContent = minutes;
+            document.querySelector('.time .seconds').textContent = seconds;
+            document.getElementById('milliseconds').textContent = milliseconds;
+
+            // Update the clock display with Morse code for date and time
+            document.querySelector('.morse-date .year').textContent = year.split('').map(toMorse).join(' ');
+            document.querySelector('.morse-date .month').textContent = month.split('').map(toMorse).join(' ');
+            document.querySelector('.morse-date .day').textContent = date.split('').map(toMorse).join(' ');
+            document.querySelector('.morse-time .hours').textContent = hours.split('').map(toMorse).join(' ');
+            document.querySelector('.morse-time .minutes').textContent = minutes.split('').map(toMorse).join(' ');
+            document.querySelector('.morse-time .seconds').textContent = seconds.split('').map(toMorse).join(' ');
+            document.getElementById('morse-milliseconds').textContent = milliseconds.split('').map(toMorse).join(' ');
+        }
+
+        // Update the clock every millisecond
+        setInterval(updateClock, 1);
+        // Call the updateClock function immediately to avoid initial delay
+        updateClock();
+    </script>
+</body>
+</html>
+
+
+

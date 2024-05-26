@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Republican Calendar & Clock </title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      background-color: black; /* Changed background color to black */
+    }
+
+    .clock {
+      display: flex;
+      align-items: center;
+    }
+
+    .time-container {
+      position: relative;
+    }
+
+    .time {
+      font-size: 48px;
+      color: #8aff80; /* Changed text color to light green */
+      font-weight: bold; /* Added font weight */
+      margin-top: 20px;
+    }
+
+    .date {
+      font-size: 24px;
+      color: #f0f000; /* Changed date text color to yellow */
+      font-weight: bold; /* Added font weight */
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="clock">
+    <div class="time-container">
+       <div class="time" id="time"></div>
+       <div class="date" id="date"></div>
+    </div>
+  </div>
+
+  <script>
+    // Function to update the clock
+    function updateClock() {
+       const now = new Date();
+      let totalMilliseconds = now.getMilliseconds() + now.getSeconds() * 1000 + now.getMinutes() * 60000 + now.getHours() * 3600000;
+
+      // Convert to decimal time
+      let decimalTime = totalMilliseconds * (10 / 86400000); // 1 day = 10 hours, 1 hour = 100 minutes, 1 minute = 100 seconds, 1 second = 1000 milliseconds
+
+      let hours = Math.floor(decimalTime).toString().padStart(2, '0'); // Hours
+      let minutes = Math.floor((decimalTime - hours) * 100).toString().padStart(2, '0'); // Minutes
+      let seconds = Math.floor((((decimalTime - hours) * 100) - minutes) * 100).toString().padStart(2, '0'); // Seconds
+      let milliseconds = Math.floor((((((decimalTime - hours) * 100) - minutes) * 100) - seconds) * 100).toString().padStart(2, '0'); // Milliseconds
+
+      // Display time
+      document.getElementById('time').innerText = hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+
+      // Display date
+      let date = getFrenchRevolutionaryDate(now);
+      document.getElementById('date').innerText = date;
+    }
+
+    // Function to calculate the French Revolutionary date
+    function getFrenchRevolutionaryDate(now) {
+      const sansculottides = ["Day of Virtue", "Day of Genius", "Day of Labour", "Day of Opinion", "Day of Rewards", "Day of Revolution"];
+      const months = ["Vendémiaire", "Brumaire", "Frimaire", "Nivôse", "Pluviôse", "Ventôse", "Germinal", "Floréal", "Prairial", "Messidor", "Thermidor", "Fructidor", "Sansculottides"];
+
+      const baseYear = 1792; // Year 1 starts from 1792
+      const baseMonth = 9; // Month 1 starts from September
+      const baseDay = 22; // Day 1 starts from 22nd
+
+      let elapsedDays = Math.floor((now - new Date(baseYear-1, baseMonth-1, baseDay)) / (1000 * 60 * 60 * 24));
+
+      let year = 0;
+      let month = 0;
+      let day = 0;
+		
+      // Consider leap years in calculations
+      while (elapsedDays > 0) {
+        let daysInYear = isLeapYear(baseYear + year) ? 366 : 365;
+        if (elapsedDays >= daysInYear) {
+          elapsedDays -= daysInYear;
+          year++;
+        } else {
+          month = Math.floor(elapsedDays / 30) + 1;
+          day = (elapsedDays % 30) + 1;
+          elapsedDays = 0;
+        }
+      }
+
+      // Adjust for the Sansculottides
+      if (month === 13) {
+        if (day < 6) {
+          day += 4;
+        } else if (day === 6) {
+          day = 1;
+        } else {
+          day -= 1;
+        }
+      }
+
+      // Output Sansculottides or regular month
+      if (month === 13) {
+        return sansculottides[day - 1] + " " + getRomanYear(year);
+      } else {
+        return day + " " + months[month - 1] + " " + getRomanYear(year);
+      }
+    }
+    
+    // Function to check for leap years
+    function isLeapYear(year) {
+      return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+    }
+    
+    // Function to convert year to Roman numerals
+    function getRomanYear(year) {
+      const romanNumerals = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX", "XX", 
+                            "XXI", "XXII", "XXIII", "XXIV", "XXV", "XXVI", "XXVII", "XXVIII", "XXIX", "XXX", "XXXI", "XXXII", "XXXIII", "XXXIV", "XXXV", "XXXVI", "XXXVII", "XXXVIII", "XXXIX", "XL",
+                            "XLI", "XLII", "XLIII", "XLIV", "XLV", "XLVI", "XLVII", "XLVIII", "XLIX", "L", "LI", "LII", "LIII", "LIV", "LV", "LVI", "LVII", "LVIII", "LIX", "LX",
+                            "LXI", "LXII", "LXIII", "LXIV", "LXV", "LXVI", "LXVII", "LXVIII", "LXIX", "LXX", "LXXI", "LXXII", "LXXIII", "LXXIV", "LXXV", "LXXVI", "LXXVII", "LXXVIII", "LXXIX", "LXXX",
+                            "LXXXI", "LXXXII", "LXXXIII", "LXXXIV", "LXXXV", "LXXXVI", "LXXXVII", "LXXXVIII", "LXXXIX", "XC", "XCI", "XCII", "XCIII", "XCIV", "XCV", "XCVI", "XCVII", "XCVIII", "XCIX", "C"];
+      let romanYear = '';
+      while (year >= 1000) {
+        romanYear += 'M';
+        year -= 1000;
+      }
+      while (year >= 900) {
+        romanYear += 'CM';
+        year -= 900;
+      }
+      while (year >= 500) {
+        romanYear += 'D';
+        year -= 500;
+      }
+      while (year >= 400) {
+        romanYear += 'CD';
+        year -= 400;
+      }
+      while (year >= 100) {
+        romanYear += 'C';
+        year -= 100;
+      }
+      while (year >= 90) {
+        romanYear += 'XC';
+        year -= 90;
+      }
+      while (year >= 50) {
+        romanYear += 'L';
+        year -= 50;
+      }
+      while (year >= 40) {
+        romanYear += 'XL';
+        year -= 40;
+      }
+      while (year >= 10) {
+        romanYear += 'X';
+        year -= 10;
+      }
+      romanYear += romanNumerals[year];
+      return romanYear;
+    }
+
+    // Update the clock every 8 milliseconds (to match French Republican time)
+    setInterval(updateClock, 8);
+
+    // Update the clock immediately
+    updateClock();
+  </script>
+</body>
+</html>

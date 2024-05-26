@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Current Time</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-size: 2em;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .clock {
+            text-align: center;
+        }
+        .year, .hours {
+            color: orange;
+        }
+        .month, .minutes {
+            color: green;
+        }
+        .day, .seconds {
+            color: yellow;
+        }
+        .milliseconds, .weekday {
+            color: lime;
+        }
+    </style>
+    <script>
+        // Convert number to Hanja characters
+        function numberToHanja(num) {
+            const hanjaNumbers = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+            return num.toString().split('').map(digit => hanjaNumbers[parseInt(digit)]).join('');
+        }
+
+        // Convert day to Hanja characters
+        function dayToHanja(day) {
+            const hanjaDays = ['日', '月', '火', '水', '木', '金', '土'];
+            return hanjaDays[day];
+        }
+
+        // Update the time and date
+        function updateTime() {
+            const now = new Date();
+            const year = numberToHanja(now.getFullYear());
+            const month = numberToHanja(now.getMonth() + 1);
+            const date = numberToHanja(now.getDate());
+            const day = dayToHanja(now.getDay());
+            const hours = numberToHanja(String(now.getHours()).padStart(2, '0'));
+            const minutes = numberToHanja(String(now.getMinutes()).padStart(2, '0'));
+            const seconds = numberToHanja(String(now.getSeconds()).padStart(2, '0'));
+            const milliseconds = numberToHanja(String(now.getMilliseconds()).padStart(3, '0'));
+
+            document.querySelector('.date .year').textContent = year;
+            document.querySelector('.date .month').textContent = month;
+            document.querySelector('.date .day').textContent = date;
+            document.querySelector('.date .weekday').textContent = day;
+
+            document.querySelector('.time .hours').textContent = hours;
+            document.querySelector('.time .minutes').textContent = minutes;
+            document.querySelector('.time .seconds').textContent = seconds;
+            document.querySelector('.time .milliseconds').textContent = milliseconds;
+        }
+		// Update the clock every millisecond
+        setInterval(updateTime, 1);
+		// Call the updateClock function immediately to avoid initial delay
+        updateTime();
+    </script>
+</head>
+<body>
+    <div class="clock">
+        <div class="date" id="date">
+            <span class="year"></span>
+            <span class="month"></span>
+            <span class="day"></span>
+            <span class="weekday"></span>
+        </div>
+        <div class="time" id="time">
+            <span class="hours"></span>
+            <span class="minutes"></span>
+            <span class="seconds"></span>
+			<span class="milliseconds"></span>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

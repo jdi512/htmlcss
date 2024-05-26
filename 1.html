@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>gradation clock</title>
+<style>
+  /* Style sheet */
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: black; /* Change background color to black */
+  }
+  
+  .clock {
+    display: flex;
+    align-items: center;
+  }
+
+  .circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em; /* Adjust font size */
+    color: black; /* Change text color to black */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    margin: 0 10px; /* Adjust spacing between circles */
+    position: relative;
+    overflow: hidden; /* Hide the hand inside the circle */
+  }
+
+  .year {
+    background: radial-gradient(circle, #ff7e5f, #feb47b); /* Gradient background for the year circle */
+  }
+
+  .month {
+    background: radial-gradient(circle, #ffa35f, #febe7b); /* Gradient background for the month circle */
+  }
+
+  .day {
+    background: radial-gradient(circle, #5fafff, #7bbefe); /* Gradient background for the day circle */
+  }
+
+  .hour {
+    background: radial-gradient(circle, #ff7e5f, #feb47b); /* Gradient background for the hour circle */
+  }
+
+  .minute {
+    background: radial-gradient(circle, #5fd9ff, #7bc5fe); /* Gradient background for the minute circle */
+  }
+
+  .second {
+    background: radial-gradient(circle, #5fff7e, #7bfe9c); /* Gradient background for the second circle */
+  }
+
+  .millisecond {
+    background: radial-gradient(circle, #ff5f5f, #fe7b7b); /* Gradient background for the millisecond circle */
+  }
+
+  .hand {
+    position: absolute;
+    width: 2px; /* Adjust hand thickness */
+    height: calc(50% - 10px); /* Adjust hand length */
+    background-color: #666; /* Change hand color to gray */
+    transform-origin: bottom center;
+  }
+
+  .year-hand {
+    width: 2px;
+    height: calc(50% - 20px);
+    background-color: #666;
+    transform-origin: bottom center;
+  }
+
+  .month-hand,
+  .day-hand {
+    width: 2px;
+    height: calc(50% - 20px);
+    background-color: #666;
+    transform-origin: bottom center;
+  }
+
+  .hour-hand {
+    transform: rotate(90deg);
+  }
+
+  .minute-hand {
+    transform: rotate(90deg);
+  }
+
+  .second-hand {
+    transform: rotate(90deg);
+  }
+
+  .millisecond-hand {
+    transform: rotate(90deg);
+  }
+
+</style>
+</head>
+<body>
+<div class="clock">
+  <!-- Div elements representing each clock component -->
+  <div class="circle year" id="year"><div class="hand year-hand" id="year-hand"></div></div>
+  <div class="circle month" id="month"><div class="hand month-hand" id="month-hand"></div></div>
+  <div class="circle day" id="day"><div class="hand day-hand" id="day-hand"></div></div>
+  <div class="circle hour" id="hour"><div class="hand hour-hand" id="hour-hand"></div></div>
+  <div class="circle minute" id="minute"><div class="hand minute-hand" id="minute-hand"></div></div>
+  <div class="circle second" id="second"><div class="hand second-hand" id="second-hand"></div></div>
+  <div class="circle millisecond" id="millisecond"><div class="hand millisecond-hand" id="millisecond-hand"></div></div>
+</div>
+<script>
+  // Function to determine leap year (every 4 years is a leap year except for years divisible by 100, unless they are also divisible by 400)
+  function isLeapYear(year) {
+    return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+  }
+
+  // Clock update function
+  function updateClock() {
+    const now = new Date();
+    const year = now.getFullYear(); // Year
+    const month = now.getMonth() + 1; // Month (months start from 0)
+    const day = now.getDate(); // Day
+    const hour = now.getHours(); // Hour
+    const minute = now.getMinutes(); // Minute
+    const second = now.getSeconds(); // Second
+    const millisecond = now.getMilliseconds(); // Millisecond
+    
+    // Calculate rotation angles for each clock component
+    const yearDeg = ((year % 100) + (day / (isLeapYear(year) ? 366 : 365)))* 360/100; // 360 degrees per 100 years, adjusted for month-day changes (366 days for leap years, 365 days otherwise)
+    const monthDeg = (month + (day / (([4, 6, 9, 11].includes(month) ? 30 : (month === 2 ? (isLeapYear(year) ? 29 : 28) : 31)) * 360))) * 360 / 12; // 12 months per year, with varying days per month (30 days for April, June, September, and November; 28 or 29 days for February depending on leap year; 31 days for the rest)
+    const dayDeg = (day + (hour / 24)) * 360 / ([4, 6, 9, 11].includes(month) ? 30 : (month === 2 ? (isLeapYear(year) ? 29 : 28) : 31)); // Adjust day based on hour changes (30 days for April, June, September, and November; 28 or 29 days for February depending on leap year; 31 days for the rest)
+    const hourDeg = (hour + (minute / 60)) * 360/24; // Adjust hour based on minute changes (24 hours per day, 60 minutes per hour)
+    const minuteDeg = (minute + (second / 60)) * 360/60; // Adjust minute based on second changes (60 minutes per hour, 60 seconds per minute)
+    const secondDeg = (second + (millisecond / 1000)) * 360/60; // Adjust second based on millisecond changes (60 seconds per minute, 1000 milliseconds per second)
+    const millisecondDeg = millisecond * 360/1000; // 1 second = 1000 milliseconds
+    
+    // Update text and rotation properties of clock    
+	// Update text and rotation properties of each clock element
+    document.getElementById('year').textContent = year;
+    document.getElementById('year').style.transform = `rotate(${yearDeg}deg)`;
+    document.getElementById('month').textContent = month;
+    document.getElementById('month').style.transform = `rotate(${monthDeg}deg)`;
+    document.getElementById('day').textContent = day;
+    document.getElementById('day').style.transform = `rotate(${dayDeg}deg)`;
+    document.getElementById('hour').textContent = hour;
+    document.getElementById('hour').style.transform = `rotate(${hourDeg}deg)`;
+    document.getElementById('minute').textContent = minute;
+    document.getElementById('minute').style.transform = `rotate(${minuteDeg}deg)`;
+    document.getElementById('second').textContent = second;
+    document.getElementById('second').style.transform = `rotate(${secondDeg}deg)`;
+    document.getElementById('millisecond').textContent = millisecond;
+    document.getElementById('millisecond').style.transform = `rotate(${millisecondDeg}deg)`;
+  }
+
+  // Update the clock every millisecond
+  setInterval(updateClock, 1);
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

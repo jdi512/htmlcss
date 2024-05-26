@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Display Current Date and Time in Mayan Calendar</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: black; /* Change background color to black */
+        color: orange; /* Change text color to orange */
+        font-size: 1.5em;
+        font-weight: bold; /* Apply bold font */
+        flex-direction: column;
+    }
+
+    #container {
+        text-align: center;
+    }
+
+    #mayanDate {
+        color: orange; /* Change date text color to orange */
+        font-size: 1.5em; 
+    }
+
+    #currentTime {
+        color: yellow; /* Change time text color to yellow */
+        font-size: 2.5em; 
+        font-weight: bold; /* Apply bold font */
+        margin-top: 0.5em; /* Add top margin to time text */
+    }
+</style>
+</head>
+<body>
+
+<div id="container">
+    <p id="mayanDate"></p>
+    <p id="currentTime"></p>
+</div>
+
+<script>
+function convertGregorianToMayan(gregorianDate) {
+    // Logic to convert Gregorian date to Mayan date
+    
+    // 1. The Mayan calendar's reference date is known to be August 11, 3114 BCE.
+    var mayaEpoch = new Date(-3113, 7, 11); // Use 7 because 0 represents January.
+    
+    // 2. Calculate the number of days since the reference date.
+    var timeDiff = gregorianDate.getTime() - mayaEpoch.getTime();
+    var daysSinceEpoch = Math.floor(timeDiff / (1000 * 3600 * 24)); // Convert to days
+    
+    // 3. Calculate Baktun, Katun, Tun, Winal, and K'in values for the Mayan date.
+    var baktun = Math.floor(daysSinceEpoch / 144000);
+    var remainingDays = daysSinceEpoch % 144000;
+    var katun = Math.floor(remainingDays / 7200);
+    remainingDays %= 7200;
+    var tun = Math.floor(remainingDays / 360);
+    remainingDays %= 360;
+    var winal = Math.floor(remainingDays / 20);
+    var kin = remainingDays % 20;
+    
+    // 4. Return the Mayan date as a string.
+    return baktun + "." + katun + "." + tun + "." + winal + "." + kin;
+}
+
+function getCurrentMayanDate() {
+    var gregorianDate = new Date();
+    var mayanDate = convertGregorianToMayan(gregorianDate);
+    return mayanDate;
+}
+
+function getCurrentTime() {
+    var currentTime = new Date();
+    var hours = currentTime.getHours().toString().padStart(2, '0');
+    var minutes = currentTime.getMinutes().toString().padStart(2, '0');
+    var seconds = currentTime.getSeconds().toString().padStart(2, '0');
+    var milliseconds = currentTime.getMilliseconds().toString().padStart(3, '0');
+    return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+}
+
+function displayCurrentDateTime() {
+    var mayanDate = getCurrentMayanDate();
+    var currentTime = getCurrentTime();
+    
+    document.getElementById("mayanDate").innerText = mayanDate;
+    document.getElementById("currentTime").innerText = currentTime;
+}
+
+// Display current date and time on page load
+displayCurrentDateTime();
+
+// Update current date and time every milliseconds
+setInterval(displayCurrentDateTime, 1);
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
