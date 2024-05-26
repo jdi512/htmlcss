@@ -5,20 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>gradation clock</title>
 <style>
-  /* Style sheet */
+  /* 화면 색깔은 검은색 */
   body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: black; /* Change background color to black */
+    background-color: black; 
   }
-  
+  /* 시계는 중앙으로 */
   .clock {
     display: flex;
     align-items: center;
   }
-
+  /* 원의 크기는 100 * 100으로 하고, 바늘을 숨깁니다.(hidden) */
   .circle {
     width: 100px;
     height: 100px;
@@ -26,47 +26,47 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.2em; /* Adjust font size */
-    color: black; /* Change text color to black */
+    font-size: 1.2em;
+    color: black;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    margin: 0 10px; /* Adjust spacing between circles */
+    margin: 0 10px;
     position: relative;
-    overflow: hidden; /* Hide the hand inside the circle */
+    overflow: hidden;
   }
-
+  /* 그라디언트 효과 부여 */
   .year {
-    background: radial-gradient(circle, #ff7e5f, #feb47b); /* Gradient background for the year circle */
+    background: radial-gradient(circle, #ff7e5f, #feb47b);
   }
 
   .month {
-    background: radial-gradient(circle, #ffa35f, #febe7b); /* Gradient background for the month circle */
+    background: radial-gradient(circle, #ffa35f, #febe7b);
   }
 
   .day {
-    background: radial-gradient(circle, #5fafff, #7bbefe); /* Gradient background for the day circle */
+    background: radial-gradient(circle, #5fafff, #7bbefe);
   }
 
   .hour {
-    background: radial-gradient(circle, #ff7e5f, #feb47b); /* Gradient background for the hour circle */
+    background: radial-gradient(circle, #ff7e5f, #feb47b);
   }
 
   .minute {
-    background: radial-gradient(circle, #5fd9ff, #7bc5fe); /* Gradient background for the minute circle */
+    background: radial-gradient(circle, #5fd9ff, #7bc5fe);
   }
 
   .second {
-    background: radial-gradient(circle, #5fff7e, #7bfe9c); /* Gradient background for the second circle */
+    background: radial-gradient(circle, #5fff7e, #7bfe9c);
   }
 
   .millisecond {
-    background: radial-gradient(circle, #ff5f5f, #fe7b7b); /* Gradient background for the millisecond circle */
+    background: radial-gradient(circle, #ff5f5f, #fe7b7b);
   }
-
+  /* 아날로그 시계 형식이니 바늘 추가(단 overflow가 hidden이여서 출력은 안함) */
   .hand {
     position: absolute;
-    width: 2px; /* Adjust hand thickness */
-    height: calc(50% - 10px); /* Adjust hand length */
-    background-color: #666; /* Change hand color to gray */
+    width: 2px;
+    height: calc(50% - 10px);
+    background-color: #666; 
     transform-origin: bottom center;
   }
 
@@ -105,7 +105,6 @@
 </head>
 <body>
 <div class="clock">
-  <!-- Div elements representing each clock component -->
   <div class="circle year" id="year"><div class="hand year-hand" id="year-hand"></div></div>
   <div class="circle month" id="month"><div class="hand month-hand" id="month-hand"></div></div>
   <div class="circle day" id="day"><div class="hand day-hand" id="day-hand"></div></div>
@@ -115,33 +114,32 @@
   <div class="circle millisecond" id="millisecond"><div class="hand millisecond-hand" id="millisecond-hand"></div></div>
 </div>
 <script>
-  // Function to determine leap year (every 4 years is a leap year except for years divisible by 100, unless they are also divisible by 400)
+  // 윤년 확인 
   function isLeapYear(year) {
     return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
   }
 
-  // Clock update function
+  // 현재 시각 출력
   function updateClock() {
     const now = new Date();
-    const year = now.getFullYear(); // Year
-    const month = now.getMonth() + 1; // Month (months start from 0)
-    const day = now.getDate(); // Day
-    const hour = now.getHours(); // Hour
-    const minute = now.getMinutes(); // Minute
-    const second = now.getSeconds(); // Second
-    const millisecond = now.getMilliseconds(); // Millisecond
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    const second = now.getSeconds();
+    const millisecond = now.getMilliseconds();
     
-    // Calculate rotation angles for each clock component
-    const yearDeg = ((year % 100) + (day / (isLeapYear(year) ? 366 : 365)))* 360/100; // 360 degrees per 100 years, adjusted for month-day changes (366 days for leap years, 365 days otherwise)
-    const monthDeg = (month + (day / (([4, 6, 9, 11].includes(month) ? 30 : (month === 2 ? (isLeapYear(year) ? 29 : 28) : 31)) * 360))) * 360 / 12; // 12 months per year, with varying days per month (30 days for April, June, September, and November; 28 or 29 days for February depending on leap year; 31 days for the rest)
-    const dayDeg = (day + (hour / 24)) * 360 / ([4, 6, 9, 11].includes(month) ? 30 : (month === 2 ? (isLeapYear(year) ? 29 : 28) : 31)); // Adjust day based on hour changes (30 days for April, June, September, and November; 28 or 29 days for February depending on leap year; 31 days for the rest)
-    const hourDeg = (hour + (minute / 60)) * 360/24; // Adjust hour based on minute changes (24 hours per day, 60 minutes per hour)
-    const minuteDeg = (minute + (second / 60)) * 360/60; // Adjust minute based on second changes (60 minutes per hour, 60 seconds per minute)
-    const secondDeg = (second + (millisecond / 1000)) * 360/60; // Adjust second based on millisecond changes (60 seconds per minute, 1000 milliseconds per second)
-    const millisecondDeg = millisecond * 360/1000; // 1 second = 1000 milliseconds
+    // 돌아가는 각도 설정
+    const yearDeg = ((year % 100) + (day / (isLeapYear(year) ? 366 : 365)))* 360/100;  //100년마다 360도 회전, 윤년 반영 
+    const monthDeg = (month + (day / (([4, 6, 9, 11].includes(month) ? 30 : (month === 2 ? (isLeapYear(year) ? 29 : 28) : 31)) * 360))) * 360 / 12; //12달마다 한 바퀴, 단 날짜 반영(2월은 28일-윤년일시 29일, 나머지 월은 30일 아니면 31일)
+    const dayDeg = (day + (hour / 24)) * 360 / ([4, 6, 9, 11].includes(month) ? 30 : (month === 2 ? (isLeapYear(year) ? 29 : 28) : 31)); //4,6,9,11일 때는 30일, 2월일 때는 28일(윤년일 때는 29일), 나머지 때는 31일
+    const hourDeg = (hour + (minute / 60)) * 360/24; // 분 변화에 따른 시간 설정(하루는 24시간, 1시간은 60분)
+    const minuteDeg = (minute + (second / 60)) * 360/60; // 초 변화에 따른 분 설정(1시간은 60분, 1분은 60초)
+    const secondDeg = (second + (millisecond / 1000)) * 360/60; // 밀리초 변화에 따른 초 설정(1분은 60초, 1초는 1000밀리초)
+    const millisecondDeg = millisecond * 360/1000; // 1초는 1000밀리초
     
-    // Update text and rotation properties of clock    
-	// Update text and rotation properties of each clock element
+    //각도 설정(rotate), 출력(getElementById)
     document.getElementById('year').textContent = year;
     document.getElementById('year').style.transform = `rotate(${yearDeg}deg)`;
     document.getElementById('month').textContent = month;
@@ -158,8 +156,10 @@
     document.getElementById('millisecond').style.transform = `rotate(${millisecondDeg}deg)`;
   }
 
-  // Update the clock every millisecond
+  // 1ms마다 갱신
   setInterval(updateClock, 1);
+  // 지연 없이 출력
+  updateClock();
 </script>
 </body>
 </html>
