@@ -19,25 +19,27 @@
         .clock {
             text-align: center;
         }
+        /* 글자 크기는 평소 글자의 2배(2em) */
         .date, .time, .milliseconds {
             font-size: 2em;
             margin: 5px 0;
         }
+        /* 모스부호 크기는 평소 글자의 1.5배(1.5em) */
         .morse-date, .morse-time, .morse-milliseconds {
             font-size: 1.5em;
             margin: 5px 0;
         }
         .year, .hours {
-            color: #ff7f00; /* Orange */
+            color: #ff7f00; /* 오렌지색 */
         }
         .month, .minutes {
-            color: #00ff00; /* Green */
+            color: #00ff00; /* 녹색 */
         }
         .day, .seconds {
-            color: #ffff00; /* Yellow */
+            color: #ffff00; /* 노란색 */
         }
         .milliseconds, .morse-milliseconds {
-            color: #ffffff; /* White */
+            color: #ffffff; /* 흰색 */
         }
     </style>
 </head>
@@ -68,7 +70,7 @@
     </div>
 
     <script>
-        // Function to convert numbers to Morse code
+        // 모스부호로 바꾸기 위한 함수
         function toMorse(num) {
             const morseCode = [
                 '-----', // 0
@@ -85,7 +87,7 @@
             return morseCode[num];
         }
 
-        // Function to update the clock
+        // 시간 출력 함수
         function updateClock() {
             const now = new Date();
             const year = String(now.getFullYear());
@@ -96,7 +98,7 @@
             const seconds = String(now.getSeconds()).padStart(2, '0');
             const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
 
-            // Update the clock display with regular date and time
+            // 시간을 html에 출력 (document.querySelector 이용)
             document.querySelector('.date .year').textContent = year;
             document.querySelector('.date .month').textContent = month;
             document.querySelector('.date .day').textContent = date;
@@ -105,7 +107,7 @@
             document.querySelector('.time .seconds').textContent = seconds;
             document.getElementById('milliseconds').textContent = milliseconds;
 
-            // Update the clock display with Morse code for date and time
+            // split를 이용해서 각각 숫자를 모스부호로 옮김 (24 -> 2/4)
             document.querySelector('.morse-date .year').textContent = year.split('').map(toMorse).join(' ');
             document.querySelector('.morse-date .month').textContent = month.split('').map(toMorse).join(' ');
             document.querySelector('.morse-date .day').textContent = date.split('').map(toMorse).join(' ');
@@ -115,9 +117,9 @@
             document.getElementById('morse-milliseconds').textContent = milliseconds.split('').map(toMorse).join(' ');
         }
 
-        // Update the clock every millisecond
+        // 1ms마다 갱신
         setInterval(updateClock, 1);
-        // Call the updateClock function immediately to avoid initial delay
+        // 지연없이 출력
         updateClock();
     </script>
 </body>
