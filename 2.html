@@ -15,57 +15,79 @@
             height: 100vh;
             background-color: black;
         }
-
+        /* 시계 위치는 화면 정중앙 */
         .clock {
             text-align: center;
         }
 
-        /* 이진법 기호는 녹색 */
+        /* 이진법 기호는 녹색(green) */
         .binary-time {
-            display: flex;
             color: green;
             font-size: 2em;
             font-weight: bold;
         }
 
-        /* 숫자는 빨간색 */
+        /* 숫자는 빨간색(red) */
         .binary-number {
-            display: flex;
             font-size: 2em;
             font-weight: bold;
             color: yellow;
+            margin-left: 10px;
+        }
+
+        /* 각 시간 단위를 일렬로 정렬 */
+        .time-unit {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px 0;
         }
     </style>
 </head>
 
 <body>
     <div class="clock">
-        <div class="binary-time" id="year1-binary"></div>
-        <div class="binary-number" id="year1-number"></div>
-        <div class="binary-time" id="year2-binary"></div>
-        <div class="binary-number" id="year2-number"></div>
-        <div class="binary-time" id="month-binary"></div>
-        <div class="binary-number" id="month-number"></div>
-        <div class="binary-time" id="day-binary"></div>
-        <div class="binary-number" id="day-number"></div>
-        <div class="binary-time" id="hour-binary"></div>
-        <div class="binary-number" id="hour-number"></div>
-        <div class="binary-time" id="minute-binary"></div>
-        <div class="binary-number" id="minute-number"></div>
-        <div class="binary-time" id="second-binary"></div>
-        <div class="binary-number" id="second-number"></div>
-        <div class="binary-time" id="millisecond-binary"></div>
-        <div class="binary-number" id="millisecond-number"></div>
-    </div>
+        <div class="time-unit">
+            <div class="binary-time" id="year1-binary"></div>
+            <div class="binary-number" id="year1-number"></div>
+        </div>
+        <div class="time-unit">
+            <div class="binary-time" id="year2-binary"></div>
+            <div class="binary-number" id="year2-number"></div>
+        </div>
+        <div class="time-unit">
+            <div class="binary-time" id="month-binary"></div>
+            <div class="binary-number" id="month-number"></div>
+        </div>
+        <div class="time-unit">
+            <div class="binary-time" id="day-binary"></div>
+            <div class="binary-number" id="day-number"></div>
+        </div>
+        <div class="time-unit">
+            <div class="binary-time" id="hour-binary"></div>
+            <div class="binary-number" id="hour-number"></div>
+        </div>
+        <div class="time-unit">
+            <div class="binary-time" id="minute-binary"></div>
+            <div class="binary-number" id="minute-number"></div>
+        </div>
+        <div class="time-unit">
+            <div class="binary-time" id="second-binary"></div>
+            <div class="binary-number" id="second-number"></div>
+        </div>
+        <div class="time-unit">
+            <div class="binary-time" id="millisecond-binary"></div>
+            <div class="binary-number" id="millisecond-number"></div>
+        </div>
     </div>
 
     <script>
-        // 숫자를 바이너리 문자열로 변환하는 함수
+        // 숫자를 바이너리(binary) 문자열로 변환하는 함수
         function toCustomBinary(num, length) {
             return num.toString(2).padStart(length, '0').replace(/0/g, '☆').replace(/1/g, '★');
         }
 
-        // 시계를 업데이트하는 함수
+        // 시간을 출력하는 함수
         function updateClock() {
             let now = new Date();
 
@@ -95,6 +117,7 @@
             document.getElementById('hour-number').innerHTML = hour.toString().padStart(2, '0');
             document.getElementById('minute-number').innerHTML = minute.toString().padStart(2, '0');
             document.getElementById('second-number').innerHTML = second.toString().padStart(2, '0');
+
             // 밀리초는 6개의 패턴 중 하나를 선택
             const millisecondPatterns = ["★☆☆☆☆☆", "☆★☆☆☆☆", "☆☆★☆☆☆", "☆☆☆★☆☆", "☆☆☆☆★☆", "☆☆☆☆☆★"];
             document.getElementById('millisecond-binary').innerHTML = millisecondPatterns[millisecond % 6];
@@ -104,10 +127,6 @@
         setInterval(updateClock, 1); // 1밀리초마다 업데이트
         updateClock(); // 페이지 로드 시 즉시 업데이트
     </script>
-</body>
-
-</html>
-
 </body>
 
 </html>
