@@ -1,104 +1,151 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Binary Clock</title>
-<style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      height: 100vh;
-      background-color: black;
-    }
-    /* 시간은 화면 정중앙에 출력 */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Clock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
         .clock {
-      display: flex;
-      align-items: center;
-    }
-
-    .time-container {
-      position: relative;
-    }
-    .date, .time {
-        margin-bottom: 20px;
-    }
-    .date span, .time span {
-        font-size: 24px;
-        margin: 0 5px;
-        font-weight: bold; 
-    }
-
-    .month, .hours {
-        color: green;
-    }
-    .day, .minutes {
-        color: yellow;
-    }
-    .year, .seconds {
-        color: orange;
-    }
-    .weekday, .milliseconds {
-        color: limegreen;
-    }
-</style>
+            text-align: center;
+        }
+        .binary-time {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .binary-time div {
+            font-size: 2em;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<div class="clock">
-    <div class="time-container">
-        <div class="date" id="date">
-            <span class="year"></span>
-            <span class="month"></span>
-            <span class="day"></span>
-            <span class="weekday"></span>
-        </div>
-        <div class="time" id="time">
-            <span class="hours"></span>
-            <span class="minutes"></span>
-            <span class="seconds"></span>
-            <span class="milliseconds"></span>
+    <div class="clock">
+        <div class="binary-time">
+            <div id="year1"></div>
+            <div id="year2"></div>
+            <div id="month"></div>
+            <div id="day"></div>
+            <div id="hour"></div>
+            <div id="minute"></div>
+            <div id="second"></div>
+            <div id="millisecond"></div>
         </div>
     </div>
-</div>
-<script>
-    function updateClock() {
-        const now = new Date();
 
-        // 날짜 출력
-        const dateDiv = document.getElementById('date');
-        const yearSpan = dateDiv.querySelector('.year');
-        const monthSpan = dateDiv.querySelector('.month');
-        const daySpan = dateDiv.querySelector('.day');
-        const weekdaySpan = dateDiv.querySelector('.weekday');
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Binary Clock</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f0f0f0;
+            }
+            .clock {
+                text-align: center;
+            }
+            .binary-time {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                color: green;
+                font-size: 2em;
+                font-weight: bold;
+            }
+            .binary-number {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                font-size: 2em;
+                font-weight: bold;
+                color: red;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="clock">
+                <div class="binary-time" id="year1-binary"></div>
+                <div class="binary-number" id="year1-number"></div>
+                <div class="binary-time" id="year2-binary"></div>
+                <div class="binary-number" id="year2-number"></div>
+                <div class="binary-time" id="month-binary"></div>
+                <div class="binary-number" id="month-number"></div>
+                <div class="binary-time" id="day-binary"></div>
+                <div class="binary-number" id="day-number"></div>
+                <div class="binary-time" id="hour-binary"></div>
+                <div class="binary-number" id="hour-number"></div>
+                <div class="binary-time" id="minute-binary"></div>
+                <div class="binary-number" id="minute-number"></div>
+                <div class="binary-time" id="second-binary"></div>
+                <div class="binary-number" id="second-number"></div>
+                <div class="binary-time" id="millisecond-binary"></div>
+                <div class="binary-number" id="millisecond-number"></div>
+            </div>
+        </div>
+    
+        <script>
+            // 숫자를 바이너리 문자열로 변환하는 함수
+            function toCustomBinary(num, length) {
+                return num.toString(2).padStart(length, '0').replace(/0/g, '☆').replace(/1/g, '★');
+            }
+    
+            // 시계를 업데이트하는 함수
+            function updateClock() {
+                let now = new Date();
+    
+                // 년도, 월, 일, 시, 분, 초, 밀리초를 구분하여 계산
+                let yearPart1 = Math.floor(now.getFullYear() / 100);
+                let yearPart2 = now.getFullYear() % 100;
+                let month = now.getMonth() + 1;
+                let day = now.getDate();
+                let hour = now.getHours();
+                let minute = now.getMinutes();
+                let second = now.getSeconds();
+                let millisecond = Math.floor(now.getMilliseconds() / 10);
+    
+                // 각각의 이진법과 아라비아 숫자를 설정
+                document.getElementById('year1-binary').innerHTML = toCustomBinary(yearPart1, 6);
+                document.getElementById('year2-binary').innerHTML = toCustomBinary(yearPart2, 6);
+                document.getElementById('month-binary').innerHTML = toCustomBinary(month, 6);
+                document.getElementById('day-binary').innerHTML = toCustomBinary(day, 6);
+                document.getElementById('hour-binary').innerHTML = toCustomBinary(hour, 6);
+                document.getElementById('minute-binary').innerHTML = toCustomBinary(minute, 6);
+                document.getElementById('second-binary').innerHTML = toCustomBinary(second, 6);
 
-        yearSpan.textContent = now.getFullYear().toString(2).padStart(12, '0');
-        monthSpan.textContent = (now.getMonth() + 1).toString(2).padStart(4, '0');
-        daySpan.textContent = now.getDate().toString(2).padStart(5, '0');
-
-        // 요일을 숫자로 매핑하여 이진법으로 표시(월-1, 화-2, 수-3...)
-        const weekdays = ['월', '화', '수', '목', '금', '토', '일'];
-        const weekdayBinary = (weekdays.indexOf(weekdays[now.getDay()]) + 1).toString(2).padStart(3, '0');
-        weekdaySpan.textContent = weekdayBinary;
-
-        // 시간 출력
-        const timeDiv = document.getElementById('time');
-        const hoursSpan = timeDiv.querySelector('.hours');
-        const minutesSpan = timeDiv.querySelector('.minutes');
-        const secondsSpan = timeDiv.querySelector('.seconds');
-        const millisecondsSpan = timeDiv.querySelector('.milliseconds');
-
-        hoursSpan.textContent = now.getHours().toString(2).padStart(5, '0');
-        minutesSpan.textContent = now.getMinutes().toString(2).padStart(6, '0');
-        secondsSpan.textContent = now.getSeconds().toString(2).padStart(6, '0');
-        millisecondsSpan.textContent = now.getMilliseconds().toString(2).padStart(10, '0');
-    }
-    setInterval(updateClock, 1); // 매 밀리초마다 업데이트
-    //지연 없이 출력
-    updateClock();
-   
-</script>
+                document.getElementById('year1-number').innerHTML = yearPart1.toString().padStart(2, '0');
+                document.getElementById('year2-number').innerHTML = yearPart2.toString().padStart(2, '0');
+                document.getElementById('month-number').innerHTML = month.toString().padStart(2, '0');
+                document.getElementById('day-number').innerHTML = day.toString().padStart(2, '0');
+                document.getElementById('hour-number').innerHTML = hour.toString().padStart(2, '0');
+                document.getElementById('minute-number').innerHTML = minute.toString().padStart(2, '0');
+                document.getElementById('second-number').innerHTML = second.toString().padStart(2, '0');
+                // 밀리초는 6개의 패턴 중 하나를 선택
+                const millisecondPatterns = ["★☆☆☆☆☆", "☆★☆☆☆☆", "☆☆★☆☆☆", "☆☆☆★☆☆", "☆☆☆☆★☆", "☆☆☆☆☆★"];
+                document.getElementById('millisecond-binary').innerHTML = millisecondPatterns[millisecond % 6];
+                document.getElementById('millisecond-number').innerHTML = millisecond.toString().padStart(2, '0');
+            }
+    
+            setInterval(updateClock, 1); // 1밀리초마다 업데이트
+            updateClock(); // 페이지 로드 시 즉시 업데이트
+        </script>
+    </body>
+    </html>
+    
 </body>
 </html>
 
