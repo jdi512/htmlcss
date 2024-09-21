@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>파이널 페이지</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="asset/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="asset/slick/slick-theme.css"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script type="text/javascript" src="asset/slick/slick.min.js"></script>
+</head>
+<style>
+    header,main,footer{
+        margin-bottom: 40px;
+    }   
+    .product > div{
+        margin : 10px;
+    }
+    .price{
+        color: blue;
+    }
+    .title{
+        font-weight:bold;
+    }
+    .dday{
+        font-weight:bold;
+        text-align: right;
+    }
+    .myTab{
+        display: flex;
+        overflow:hidden;
+    }
+    .myTab > div{
+        width : 120px;
+        margin: 10px;
+    }
+</style>
+<body>  
+    <script src="src/app.js"></script>
+    <div class = "container">
+     
+        <header><nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#"> 도서 검색 사이트 </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                  </li>
+                </ul>
+                <form class="d-flex" role="search">
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+              </div>
+            </div>
+          </nav></header>
+          
+        <main> 
+            <div class="product">
+            </div>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">HTML</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">CSS</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">JS</a>
+                </li>
+            </ul>
+            <div class="myTab">
+            </div>
+        </main>
+        <footer><div class="text-center">copyright 2023©</div></footer>
+        <script>
+            // 변수 설정
+            query = "JAVA";
+            // 책 정보 가져오기
+               function getBest(obj){
+                        $.ajax({
+                           type:"get",
+                           url:"https://dapi.kakao.com/v3/search/book",
+                           data:{
+                                query:query,
+                                target:"title"
+                                },
+                           headers:{Authorization:"KakaoAK 26e253cda867120a05230e16f30c137e"},
+                           dataType:"json",
+                           success:function(data){
+                                for(let i = 0; i<data.documents.length; i++){
+                                    let book = "<div>";
+                                    book += "<div><a href ='" + data.documents[i].url + "'><img src = " + data.documents[i].thumbnail +" ''></a></div>";
+                                    book += "<div class='title'>" + data.documents[i].title +"</a></div>";
+                                    book += "<div class='price'>" +  data.documents[i].price.toLocaleString("ko-KR") + "원</div>";
+                                    book += "</div>";
+                                    if(obj == undefined){
+                                        $(".product").append(book);
+                                    }else{
+                                        obj.append(book);
+                                    }
+                                }
+
+                                $(".product").slick({
+                                slidesToShow: 9,
+                                slidesToScroll: 1,
+                                autoplay: true,
+                                autoplaySpeed: 1500,
+                                });
+                            }
+                        });
+                }
+                    $(document).ready(function(){
+                        getBest();
+
+                    $(".nav-link").on("click",function(){
+                        $(this).addClass("active");
+                            if($(this).html() == 'HTML'){
+                                query="HTML";
+                                $(".myTab").empty();
+                                getBest($(".myTab"));
+                            }else if($(this).html() == 'CSS'){
+                                query="CSS";
+                                $(".myTab").empty();
+                                getBest($(".myTab"));
+                            }else if($(this).html() == 'JS'){
+                                query="JS";
+                                $(".myTab").empty();
+                                getBest($(".myTab"));
+                            }
+                            
+
+                            });
+            
+                        });
+
+        </script>
+    </div>
+</body>
+</html>
